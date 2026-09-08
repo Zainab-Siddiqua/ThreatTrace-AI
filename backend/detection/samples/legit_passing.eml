@@ -1,0 +1,9 @@
+From: "Google Security" <no-reply@google.com>
+To: user@example.com
+Subject: Security Alert: New login detected
+Reply-To: no-reply@google.com
+Date: Mon, 08 Sep 2026 10:00:00 +0530
+Received: from mail-sor-f69.google.com (209.85.220.69) by mx.example.com; Mon, 08 Sep 2026 10:00:02 +0530
+Authentication-Results: mx.example.com; spf=pass smtp.mailfrom=google.com; dkim=pass header.d=google.com; dmarc=pass (p=reject) header.from=google.com
+
+We noticed a new login to your Google Account from a new device.

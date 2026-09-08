@@ -1,0 +1,7 @@
+From: "Internal Old Server" <admin@legacy-internal.local>
+To: dev-team@example.com
+Subject: System Maintenance Notice
+Date: Mon, 08 Sep 2026 10:00:00 +0530
+Received: from internal-node (10.0.0.12) by mx.example.com; Mon, 08 Sep 2026 09:55:00 +0530
+
+Scheduled downtime starting tonight at midnight UTC.

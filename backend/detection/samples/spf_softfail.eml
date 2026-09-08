@@ -1,0 +1,8 @@
+From: "Marketing Team" <news@partner-company.org>
+To: user@example.com
+Subject: Weekly Newsletter Update
+Date: Mon, 08 Sep 2026 10:00:00 +0530
+Received: from relay-3.marketing.com (198.51.100.14) by mx.example.com; Mon, 08 Sep 2026 10:00:01 +0530
+Authentication-Results: mx.example.com; spf=softfail smtp.mailfrom=partner-company.org; dkim=pass header.d=partner-company.org; dmarc=none
+
+Here is your weekly summary of marketing tech news.

@@ -1,0 +1,9 @@
+From: "HDFC Bank Security" <security@hdfc-alerts-verify.com>
+To: victim@example.com
+Subject: Urgent: Verify your account within 24 hours
+Reply-To: exfil-daemon@bulletproof-relay.net
+Date: Mon, 08 Sep 2026 10:00:00 +0530
+Received: from unknown-relay.tor-exit.net (185.220.101.5) by mx.example.com; Mon, 08 Sep 2026 10:00:05 +0530
+Authentication-Results: mx.example.com; spf=fail smtp.mailfrom=hdfc-alerts-verify.com; dkim=fail header.d=hdfc-alerts-verify.com; dmarc=fail (p=reject) header.from=hdfc-alerts-verify.com
+
+Your account will be suspended. Click here to verify immediately.

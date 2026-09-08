@@ -1,0 +1,8 @@
+From: "CEO Office" <ceo@brand-company.com>
+To: finance@brand-company.com
+Subject: Confidential Wire Request
+Date: Mon, 08 Sep 2026 10:00:00 +0530
+Received: from mail.thirdparty-sender.com (192.0.2.88) by mx.example.com; Mon, 08 Sep 2026 09:58:00 +0530
+Authentication-Results: mx.example.com; spf=pass smtp.mailfrom=thirdparty-sender.com; dkim=pass header.d=thirdparty-sender.com; dmarc=fail (p=quarantine) header.from=brand-company.com
+
+Please process this wire transfer today.

@@ -1,0 +1,122 @@
+[
+  {
+    "id": "EML-2026-8901",
+    "subject": "URGENT: Executive Wire Transfer Authorization - Q3 Fiscal Closing",
+    "sender": "ceo-office@megacorp-finance-portal.com",
+    "recipient": "treasury.ops@targetdefense.org",
+    "timestamp": "2026-09-06T23:14:22Z",
+    "fraud_score": 94,
+    "verdict": "MALICIOUS",
+    "threat_group_id": "Threat Cluster GHOSTWIRE",
+    "headers": {
+      "spf": "FAIL",
+      "dkim": "FAIL",
+      "dmarc": "REJECT",
+      "return_path": "bounce-handler@disposable-relay77.ru",
+      "received_from": "relay-exit04.bulletproof-host.net [185.220.101.5]"
+    },
+    "origin": {
+      "ip": "185.220.101.5",
+      "country": "Russia",
+      "city": "Moscow",
+      "lat": 55.7558,
+      "lng": 37.6173,
+      "is_vpn_tor": true,
+      "isp": "Tor Exit Node Relay / Anonymous Network",
+      "asn": "AS44034"
+    },
+    "ai_summary": "High-confidence spear-phishing / Business Email Compromise (BEC) attempt impersonating the CEO Office. The sender domain ('megacorp-finance-portal.com') is a newly registered typosquat (48 hours old). The email originated from a known TOR Exit Node in Moscow. SPF and DKIM signatures failed cryptographic validation with a strict DMARC rejection policy violation. Embedded payload points to an active credential harvesting gateway.",
+    "body_preview": "Attention Treasury Team: Attached is the revised SWIFT wire authorization for offshore acquisition escrow. Complete by 04:00 UTC...",
+    "full_body": "Attention Treasury Operations Team,\n\nPlease find attached the confidential SWIFT wire transfer authorization docket for the Q3 offshore acquisition escrow account. The Board of Directors has expedited this clearance.\n\nPlease authenticate and release the wire immediately to avoid regulatory compliance penalties.\n\nDirect Wire Gateway: https://megacorp-finance-portal.com/auth/swift-wire-v2\n\nRegards,\nOffice of the Chief Executive Officer\nMegaCorp Global Logistics Group",
+    "domain": "megacorp-finance-portal.com",
+    "iocs": {
+      "urls": [
+        "https://megacorp-finance-portal.com/auth/swift-wire-v2",
+        "http://185.220.101.5/c2/beacon.php"
+      ],
+      "c2_ips": [
+        "185.220.101.5",
+        "91.240.118.172"
+      ],
+      "file_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "id": "EML-2026-8902",
+    "subject": "Action Required: Microsoft 365 MFA Token Re-authentication",
+    "sender": "no-reply@security-microsoft-verify.net",
+    "recipient": "staff.security@targetdefense.org",
+    "timestamp": "2026-09-06T21:42:10Z",
+    "fraud_score": 58,
+    "verdict": "SUSPICIOUS",
+    "threat_group_id": "UNC3886 / Scattered Spider Affiliate",
+    "headers": {
+      "spf": "PASS",
+      "dkim": "FAIL",
+      "dmarc": "NONE",
+      "return_path": "alert@security-microsoft-verify.net",
+      "received_from": "mail-node9.cloud-vps-nigeria.com [102.164.220.19]"
+    },
+    "origin": {
+      "ip": "102.164.220.19",
+      "country": "Nigeria",
+      "city": "Lagos",
+      "lat": 6.5244,
+      "lng": 3.3792,
+      "is_vpn_tor": true,
+      "isp": "Commercial VPN / Cloud Hosting Services",
+      "asn": "AS37148"
+    },
+    "ai_summary": "Suspicious credential harvesting lure designed to mimic official Microsoft 365 identity verification. While the sending server managed to satisfy a lenient SPF record, DKIM key alignment is missing and DMARC enforcement is unenforced. Traffic traces back to a commercial VPN provider in Lagos, Nigeria with historical links to AiTM (Adversary-in-the-Middle) phishing campaigns.",
+    "body_preview": "Your multi-factor authentication (MFA) device session has expired. Re-authenticate within 2 hours to avoid account lockout...",
+    "full_body": "Identity Protection Alert\n\nWe detected anomalous sign-in activity on your enterprise Microsoft 365 account. Your single sign-on token has been temporarily placed on hold.\n\nTo restore continuous access, re-authenticate your mobile authenticator key here:\nhttps://security-microsoft-verify.net/sso/login?session_token=98af12\n\nSecurity Operations Center\nGlobal Directory Services",
+    "domain": "security-microsoft-verify.net",
+    "iocs": {
+      "urls": [
+        "https://security-microsoft-verify.net/sso/login?session_token=98af12"
+      ],
+      "c2_ips": [
+        "102.164.220.19"
+      ],
+      "file_hash": "7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069"
+    }
+  },
+  {
+    "id": "EML-2026-8903",
+    "subject": "Internal Security Bulletin: Q3 Mandatory Threat Awareness Training",
+    "sender": "infosec-training@company-defense.internal",
+    "recipient": "all-employees@targetdefense.org",
+    "timestamp": "2026-09-06T19:05:00Z",
+    "fraud_score": 12,
+    "verdict": "BENIGN",
+    "threat_group_id": "NONE (Internal / Verified)",
+    "headers": {
+      "spf": "PASS",
+      "dkim": "PASS",
+      "dmarc": "PASS",
+      "return_path": "infosec-training@company-defense.internal",
+      "received_from": "corp-mail-edge01.company-defense.internal [198.51.100.42]"
+    },
+    "origin": {
+      "ip": "198.51.100.42",
+      "country": "United States",
+      "city": "Seattle",
+      "lat": 47.6062,
+      "lng": -122.3321,
+      "is_vpn_tor": false,
+      "isp": "Corporate Enterprise Dedicated ASN",
+      "asn": "AS15169"
+    },
+    "ai_summary": "Legitimate enterprise broadcast. Complete cryptographic authentication verified across SPF, 2048-bit DKIM, and strict DMARC alignment. Sender IP maps directly to the verified corporate edge mail cluster in Seattle, WA. No suspicious telemetry, redirects, or adversarial indicators detected.",
+    "body_preview": "Team, please remember to complete your Q3 Cyber Hygiene awareness modules on the internal portal before the September deadline...",
+    "full_body": "Team,\n\nAs part of our continuous cyber readiness posture, the Q3 Interactive Cyber Hygiene and Social Engineering simulation modules are now open.\n\nAll team members are requested to complete the 15-minute briefing before September 30.\n\nAccess portal: https://training.company-defense.internal/lms/q3-2026\n\nThank you for keeping our perimeter secure,\nCorporate Information Security & Compliance Team",
+    "domain": "company-defense.internal",
+    "iocs": {
+      "urls": [
+        "https://training.company-defense.internal/lms/q3-2026"
+      ],
+      "c2_ips": [],
+      "file_hash": "c3ab8ff13720e8ad9047dd39466b3c8974e592c2fa383d4a3960714caef0c4f2"
+    }
+  }
+]
