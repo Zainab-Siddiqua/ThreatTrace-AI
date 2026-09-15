@@ -1,0 +1,285 @@
+{
+  "summary": {
+    "total_entities": 9,
+    "total_relationships": 9,
+    "identified_campaigns": 2,
+    "critical_threats": 2,
+    "active_syndicates": 2
+  },
+  "campaigns": [
+    {
+      "campaign_id": "CAMP-1000",
+      "is_coordinated_gang": true,
+      "threat_level": "CRITICAL",
+      "node_count": 5,
+      "senders": [
+        "security@office-renew.net",
+        "support@micros0ft-verify.com"
+      ],
+      "domains": [
+        "micros0ft-verify.com",
+        "office-renew.net"
+      ],
+      "infrastructure_ips": [
+        "185.220.101.5"
+      ],
+      "urls": [
+        "https://micros0ft-verify.com/login",
+        "https://office-renew.net/auth"
+      ],
+      "email_ids": [
+        "MSG-002",
+        "MSG-001"
+      ],
+      "fraud_metrics": {
+        "avg_fraud_score": 0.925,
+        "max_fraud_score": 0.94
+      },
+      "correlation_score": 75,
+      "correlation_reasons": [
+        "High-Risk Domain Age",
+        "Shared Auth Anomaly",
+        "Shared IP"
+      ],
+      "correlation_summary": "CORRELATION_SCORE: 75 (High-Risk Domain Age + Shared Auth Anomaly + Shared IP)"
+    },
+    {
+      "campaign_id": "CAMP-1001",
+      "is_coordinated_gang": true,
+      "threat_level": "CRITICAL",
+      "node_count": 4,
+      "senders": [
+        "admin@hr-portal-login.org",
+        "payroll@hr-portal-login.org"
+      ],
+      "domains": [
+        "hr-portal-login.org"
+      ],
+      "infrastructure_ips": [
+        "194.26.29.112"
+      ],
+      "urls": [
+        "https://hr-portal-login.org/payroll-verify.exe"
+      ],
+      "email_ids": [
+        "MSG-004",
+        "MSG-003"
+      ],
+      "fraud_metrics": {
+        "avg_fraud_score": 0.92,
+        "max_fraud_score": 0.96
+      },
+      "correlation_score": 125,
+      "correlation_reasons": [
+        "High-Risk Domain Age",
+        "Shared Auth Anomaly",
+        "Shared Domain",
+        "Shared IP",
+        "Shared URL/Payload"
+      ],
+      "correlation_summary": "CORRELATION_SCORE: 125 (High-Risk Domain Age + Shared Auth Anomaly + Shared Domain + Shared IP + Shared URL/Payload)"
+    }
+  ],
+  "vis_graph": {
+    "nodes": [
+      {
+        "id": "support@micros0ft-verify.com",
+        "label": "support@micros0ft-verify.com",
+        "type": "sender",
+        "color": "#ff7675",
+        "location": {
+          "country": "NL",
+          "city": "Amsterdam",
+          "isp": "HostPalace Web Services"
+        },
+        "fraud_score": 0.91,
+        "domain_age_days": null
+      },
+      {
+        "id": "micros0ft-verify.com",
+        "label": "micros0ft-verify.com",
+        "type": "domain",
+        "color": "#74b9ff",
+        "location": null,
+        "fraud_score": null,
+        "domain_age_days": 12
+      },
+      {
+        "id": "185.220.101.5",
+        "label": "185.220.101.5",
+        "type": "ip",
+        "color": "#a29bfe",
+        "location": {
+          "country": "NL",
+          "city": "Amsterdam",
+          "isp": "HostPalace Web Services"
+        },
+        "fraud_score": null,
+        "domain_age_days": null
+      },
+      {
+        "id": "security@office-renew.net",
+        "label": "security@office-renew.net",
+        "type": "sender",
+        "color": "#ff7675",
+        "location": {
+          "country": "NL",
+          "city": "Amsterdam",
+          "isp": "HostPalace Web Services"
+        },
+        "fraud_score": 0.94,
+        "domain_age_days": null
+      },
+      {
+        "id": "office-renew.net",
+        "label": "office-renew.net",
+        "type": "domain",
+        "color": "#74b9ff",
+        "location": null,
+        "fraud_score": null,
+        "domain_age_days": 8
+      },
+      {
+        "id": "admin@hr-portal-login.org",
+        "label": "admin@hr-portal-login.org",
+        "type": "sender",
+        "color": "#ff7675",
+        "location": {
+          "country": "RU",
+          "city": "St Petersburg",
+          "isp": "Selectel ISP"
+        },
+        "fraud_score": 0.88,
+        "domain_age_days": null
+      },
+      {
+        "id": "hr-portal-login.org",
+        "label": "hr-portal-login.org",
+        "type": "domain",
+        "color": "#74b9ff",
+        "location": null,
+        "fraud_score": null,
+        "domain_age_days": 15
+      },
+      {
+        "id": "194.26.29.112",
+        "label": "194.26.29.112",
+        "type": "ip",
+        "color": "#a29bfe",
+        "location": {
+          "country": "RU",
+          "city": "St Petersburg",
+          "isp": "Selectel ISP"
+        },
+        "fraud_score": null,
+        "domain_age_days": null
+      },
+      {
+        "id": "payroll@hr-portal-login.org",
+        "label": "payroll@hr-portal-login.org",
+        "type": "sender",
+        "color": "#ff7675",
+        "location": {
+          "country": "RU",
+          "city": "St Petersburg",
+          "isp": "Selectel ISP"
+        },
+        "fraud_score": 0.96,
+        "domain_age_days": null
+      }
+    ],
+    "edges": [
+      {
+        "source": "support@micros0ft-verify.com",
+        "target": "micros0ft-verify.com",
+        "relation": "SENT_FROM_DOMAIN",
+        "title": "SENT_FROM_DOMAIN\nSender: support@micros0ft-verify.com\nDomain: micros0ft-verify.com\nEmail ID: MSG-001",
+        "score": null,
+        "reasons": [],
+        "edge_type": "infrastructure"
+      },
+      {
+        "source": "support@micros0ft-verify.com",
+        "target": "security@office-renew.net",
+        "relation": "CORRELATION_SCORE: 75 (Shared IP & Shared Auth Anomaly & High-Risk Domain Age)",
+        "title": "Correlation Score: 75 | Shared IP & Shared Auth Anomaly & High-Risk Domain Age",
+        "score": 75,
+        "reasons": [
+          "Shared IP",
+          "Shared Auth Anomaly",
+          "High-Risk Domain Age"
+        ],
+        "edge_type": "correlation"
+      },
+      {
+        "source": "micros0ft-verify.com",
+        "target": "185.220.101.5",
+        "relation": "HOSTED_ON_IP",
+        "title": "HOSTED_ON_IP\nDomain: micros0ft-verify.com\nIP: 185.220.101.5\nEmail ID: MSG-001",
+        "score": null,
+        "reasons": [],
+        "edge_type": "infrastructure"
+      },
+      {
+        "source": "185.220.101.5",
+        "target": "office-renew.net",
+        "relation": "HOSTED_ON_IP",
+        "title": "HOSTED_ON_IP\nDomain: office-renew.net\nIP: 185.220.101.5\nEmail ID: MSG-002",
+        "score": null,
+        "reasons": [],
+        "edge_type": "infrastructure"
+      },
+      {
+        "source": "security@office-renew.net",
+        "target": "office-renew.net",
+        "relation": "SENT_FROM_DOMAIN",
+        "title": "SENT_FROM_DOMAIN\nSender: security@office-renew.net\nDomain: office-renew.net\nEmail ID: MSG-002",
+        "score": null,
+        "reasons": [],
+        "edge_type": "infrastructure"
+      },
+      {
+        "source": "admin@hr-portal-login.org",
+        "target": "hr-portal-login.org",
+        "relation": "SENT_FROM_DOMAIN",
+        "title": "SENT_FROM_DOMAIN\nSender: admin@hr-portal-login.org\nDomain: hr-portal-login.org\nEmail ID: MSG-003",
+        "score": null,
+        "reasons": [],
+        "edge_type": "infrastructure"
+      },
+      {
+        "source": "admin@hr-portal-login.org",
+        "target": "payroll@hr-portal-login.org",
+        "relation": "CORRELATION_SCORE: 125 (Shared IP & Shared Domain & Shared URL/Payload & Shared Auth Anomaly & High-Risk Domain Age)",
+        "title": "Correlation Score: 125 | Shared IP & Shared Domain & Shared URL/Payload & Shared Auth Anomaly & High-Risk Domain Age",
+        "score": 125,
+        "reasons": [
+          "Shared IP",
+          "Shared Domain",
+          "Shared URL/Payload",
+          "Shared Auth Anomaly",
+          "High-Risk Domain Age"
+        ],
+        "edge_type": "correlation"
+      },
+      {
+        "source": "hr-portal-login.org",
+        "target": "194.26.29.112",
+        "relation": "HOSTED_ON_IP",
+        "title": "HOSTED_ON_IP\nDomain: hr-portal-login.org\nIP: 194.26.29.112\nEmail ID: MSG-004",
+        "score": null,
+        "reasons": [],
+        "edge_type": "infrastructure"
+      },
+      {
+        "source": "hr-portal-login.org",
+        "target": "payroll@hr-portal-login.org",
+        "relation": "SENT_FROM_DOMAIN",
+        "title": "SENT_FROM_DOMAIN\nSender: payroll@hr-portal-login.org\nDomain: hr-portal-login.org\nEmail ID: MSG-004",
+        "score": null,
+        "reasons": [],
+        "edge_type": "infrastructure"
+      }
+    ]
+  }
+}

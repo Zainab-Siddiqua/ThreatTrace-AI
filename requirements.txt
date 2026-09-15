@@ -9,3 +9,7 @@ dnspython>=2.4.0
 
 # Testing & Framework
 pytest>=7.4.0
+networkx
+fastapi
+uvicorn
+pydantic
