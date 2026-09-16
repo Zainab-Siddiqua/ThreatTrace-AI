@@ -13,3 +13,6 @@ networkx
 fastapi
 uvicorn
 pydantic
+# Geospatial & Origin Tracing
+geoip2>=4.8.0
+maxminddb>=2.6.0

@@ -9,6 +9,9 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from intelligence.attribution_graph import threat_engine, ThreatGraphEngine
 import intelligence.attribution_graph as graph_module
+from intelligence.origin_tracer import OriginTracer
+
+origin_tracer = OriginTracer()
 
 # Docs disabled on default root to allow custom dark theme injection
 app = FastAPI(
@@ -135,6 +138,13 @@ class EmailForensicArtifact(BaseModel):
             if "dmarc_status" not in data:
                 data["dmarc_status"] = "FAIL"
         return data
+
+class TraceOriginRequest(BaseModel):
+    headers: str = Field(
+        ...,
+        description="Raw multiline Received: email headers string to trace",
+        example="Received: from mail-relay.nl-forward.net (185.220.101.6) by mx.google.com with ESMTPS id abc789; Tue, 08 Sep 2026 14:20:15 +0000\nReceived: from offshore-node.sofia-cloud.bg (91.215.85.17) by mail-relay.nl-forward.net with ESMTP id hop2; Tue, 08 Sep 2026 14:20:10 +0000\nReceived: from workstation-win10 (192.168.10.55) by offshore-node.sofia-cloud.bg with ESMTPSA id hop1; Tue, 08 Sep 2026 14:20:02 +0000"
+    )
 
 @app.get("/docs", include_in_schema=False)
 def custom_dark_swagger_ui_html():
@@ -680,6 +690,15 @@ def custom_dark_swagger_ui_html():
     </body>
     </html>
     """)
+
+@app.post(
+    "/trace-origin",
+    summary="Trace Email Origin & Relay Route",
+    description="Parse raw multiline Received: headers, reconstruct chronological relay hops, identify earliest untrusted public infrastructure, and resolve offline MaxMind GeoLite2 geospatial & ASN metadata.",
+    tags=["Geospatial Intelligence"]
+)
+def trace_email_origin(payload: TraceOriginRequest):
+    return origin_tracer.trace(payload.headers)
 
 @app.post(
     "/attribute",
