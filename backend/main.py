@@ -13,6 +13,15 @@ from intelligence.origin_tracer import OriginTracer
 
 origin_tracer = OriginTracer()
 
+# Part 1 Detection modules — graceful fallback if models not yet present
+try:
+    from detection.content_classifier import analyze_content
+    from detection.header_analyzer import parse_eml_file, compute_final_threat_score, extract_auth_results
+    DETECTION_AVAILABLE = True
+except Exception as _det_err:
+    DETECTION_AVAILABLE = False
+    print(f"[Warning] Detection modules unavailable: {_det_err}")
+
 # Docs disabled on default root to allow custom dark theme injection
 app = FastAPI(
     title="ThreatTrace Intelligence API",
@@ -144,6 +153,20 @@ class TraceOriginRequest(BaseModel):
         ...,
         description="Raw multiline Received: email headers string to trace",
         example="Received: from mail-relay.nl-forward.net (185.220.101.6) by mx.google.com with ESMTPS id abc789; Tue, 08 Sep 2026 14:20:15 +0000\nReceived: from offshore-node.sofia-cloud.bg (91.215.85.17) by mail-relay.nl-forward.net with ESMTP id hop2; Tue, 08 Sep 2026 14:20:10 +0000\nReceived: from workstation-win10 (192.168.10.55) by offshore-node.sofia-cloud.bg with ESMTPSA id hop1; Tue, 08 Sep 2026 14:20:02 +0000"
+    )
+
+class AnalyzeEmailRequest(BaseModel):
+    subject: str = Field(..., description="Email subject line", example="URGENT: Verify your account within 24 hours")
+    body: str = Field(..., description="Full plain-text email body", example="Your account will be suspended. Click here to verify immediately.")
+    received_headers: str = Field(
+        ...,
+        description="Raw multiline Received: headers extracted from the email",
+        example="Received: from unknown-relay.tor-exit.net (185.220.101.5) by mx.example.com; Mon, 08 Sep 2026 10:00:05 +0530"
+    )
+    auth_results_header: Optional[str] = Field(
+        default=None,
+        description="Authentication-Results header string (SPF/DKIM/DMARC)",
+        example="mx.example.com; spf=fail; dkim=fail; dmarc=fail"
     )
 
 @app.get("/docs", include_in_schema=False)
@@ -699,6 +722,123 @@ def custom_dark_swagger_ui_html():
 )
 def trace_email_origin(payload: TraceOriginRequest):
     return origin_tracer.trace(payload.headers)
+
+@app.post(
+    "/analyze-email",
+    summary="Unified Email Forensic Analysis",
+    description=(
+        "Master forensic pipeline combining Part 1 (ML content classifier + SPF/DKIM/DMARC header auth) "
+        "and Part 2 (MaxMind geospatial origin tracing + attribution graph ingestion). "
+        "Accepts raw email fields and returns a complete forensic docket with threat score, "
+        "geo-origin, relay hops, and syndicate attribution."
+    ),
+    tags=["Unified Pipeline"]
+)
+def analyze_email(payload: AnalyzeEmailRequest):
+    from fastapi import HTTPException
+    if not DETECTION_AVAILABLE:
+        raise HTTPException(
+            status_code=503,
+            detail="Detection modules unavailable. Ensure classifier.pkl and vectorizer.pkl are present."
+        )
+
+    # ── PART 1A: ML Content Scoring ─────────────────────────────────────────
+    content_score = analyze_content(payload.subject, payload.body)
+
+    # ── PART 1B: Auth Header Scoring (SPF / DKIM / DMARC) ───────────────────
+    auth_results = {"spf": "none", "dkim": "none", "dmarc": "none"}
+    if payload.auth_results_header:
+        header_lower = payload.auth_results_header.lower()
+        for proto in ("spf", "dkim", "dmarc"):
+            if f"{proto}=pass" in header_lower:
+                auth_results[proto] = "pass"
+            elif f"{proto}=fail" in header_lower:
+                auth_results[proto] = "fail"
+            elif f"{proto}=softfail" in header_lower:
+                auth_results[proto] = "softfail"
+            elif f"{proto}=neutral" in header_lower:
+                auth_results[proto] = "neutral"
+            elif f"{proto}=none" in header_lower:
+                auth_results[proto] = "none"
+
+    final_threat_score = compute_final_threat_score(content_score, auth_results)
+
+    # ── PART 2A: Geospatial Origin Tracing ───────────────────────────────────
+    geo_result = origin_tracer.trace(payload.received_headers)
+    origin_map = geo_result.get("origin", {})
+    origin_summary = geo_result.get("origin_summary", {})
+    relay_hops = geo_result.get("relay_hops", [])
+    map_features = geo_result.get("map_features", [])
+
+    # ── PART 2B: Auto-ingest into Attribution Graph ───────────────────────────
+    origin_ip = origin_map.get("ip", "0.0.0.0")
+    origin_country = origin_map.get("country", "Unknown")
+    origin_isp = origin_map.get("isp", "Unknown")
+
+    artifact_for_graph = {
+        "email_id": f"LIVE-{hash(payload.subject + origin_ip) & 0xFFFFFF:06X}",
+        "sender": payload.subject[:32],
+        "domain": origin_isp.lower().replace(" ", "-") + ".net",
+        "origin_ip": origin_ip,
+        "location": {
+            "country": origin_country,
+            "city": origin_map.get("city", ""),
+            "isp": origin_isp
+        },
+        "spf_status": auth_results["spf"].upper(),
+        "dkim_status": auth_results["dkim"].upper(),
+        "dmarc_status": auth_results["dmarc"].upper(),
+        "domain_age_days": 0,
+        "urls": [],
+        "fraud_score": round(final_threat_score / 100, 2)
+    }
+    graph_module.threat_engine.ingest_artifact(artifact_for_graph)
+    attribution = graph_module.threat_engine.analyze_campaigns()
+
+    # ── VERDICT ───────────────────────────────────────────────────────────────
+    if final_threat_score >= 80:
+        verdict = "PHISHING"
+        verdict_color = "#f43f5e"
+    elif final_threat_score >= 50:
+        verdict = "SUSPICIOUS"
+        verdict_color = "#f59e0b"
+    else:
+        verdict = "LIKELY_SAFE"
+        verdict_color = "#22c55e"
+
+    return {
+        "verdict": verdict,
+        "verdict_color": verdict_color,
+        "threat_score": final_threat_score,
+
+        # Part 1 detail
+        "detection": {
+            "content_score": content_score,
+            "final_score": final_threat_score,
+            "auth_results": auth_results,
+            "score_breakdown": {
+                "ml_content": content_score,
+                "spf_penalty": -15 if auth_results["spf"] == "fail" else 0,
+                "dkim_penalty": -10 if auth_results["dkim"] == "fail" else 0,
+                "dmarc_penalty": -15 if auth_results["dmarc"] == "fail" else 0
+            }
+        },
+
+        # Part 2 detail
+        "intelligence": {
+            "origin": origin_map,
+            "origin_summary": origin_summary,
+            "relay_hops": relay_hops,
+            "map_features": map_features
+        },
+
+        # Graph attribution
+        "attribution": {
+            "syndicates_detected": attribution.get("total_syndicates", 0),
+            "active_campaigns": attribution.get("active_campaigns", []),
+            "artifact_id": artifact_for_graph["email_id"]
+        }
+    }
 
 @app.post(
     "/attribute",
